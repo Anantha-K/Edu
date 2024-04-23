@@ -5,33 +5,77 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/User");
 
+// authRouter.post("/api/Signup", async (req, res) => {
+//   try {
+//     const { name, username, password } = req.body;
+
+//     const existingUser = await User.findOne({ username });
+//     if (existingUser) {
+//       return res.status(400).json({ message: "User Already Exists" });
+//     }
+
+//     const hashed = await bcryptjs.hash(password, 8);
+//     let user = new User({
+//       name,
+//       username,
+//       password: hashed,
+//     });
+//     user = await user.save();
+//     res.json(user);
+//   } catch (e) {
+//     res.status(500).json({ message: "Server Error" + e});
+//   }
+// });
+
 authRouter.post("/api/Signup", async (req, res) => {
   try {
-    const { name, username, password } = req.body;
+    const userData = {
+      name: "John Doe",
+      userid: "john123",
+      email: "john@example.com",
+      password: "password123",
+      CurrentlyLearning: [],
+      currentStreak: 0,
+      score: 0,
+      maxStreak: 0,
+      totalQuizzesTaken: 0,
+      quizzesCompleted: [],
+      mistakes: []
+    };
 
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ userid: userData.userid });
     if (existingUser) {
       return res.status(400).json({ message: "User Already Exists" });
     }
 
-    const hashed = await bcryptjs.hash(password, 8);
-    let user = new User({
-      name,
-      username,
-      password: hashed,
+    const hashedPassword = await bcryptjs.hash(userData.password, 8);
+
+    const newUser = new User({
+      name: userData.name,
+      userid: userData.userid,
+      email: userData.email,
+      password: hashedPassword,
+      CurrentlyLearning: userData.CurrentlyLearning,
+      currentStreak: userData.currentStreak,
+      score: userData.score,
+      maxStreak: userData.maxStreak,
+      totalQuizzesTaken: userData.totalQuizzesTaken,
+      quizzesCompleted: userData.quizzesCompleted,
+      mistakes: userData.mistakes
     });
-    user = await user.save();
-    res.json(user);
+
+    await newUser.save();
+
+    res.json(newUser);
   } catch (e) {
-    res.status(500).json({ message: "Server Error" + e});
+    res.status(500).json({ message: "Server Error" + e });
   }
 });
-
 authRouter.post("/api/Signin", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { userid, password } = req.body;
 
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ userid });
 
     if (!user) {
       return res.status(400).json({ message: "User Does not Exist" });

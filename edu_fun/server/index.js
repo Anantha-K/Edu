@@ -4,6 +4,8 @@ const queRouter = require('./Routes/addQue');
 const authRouter = require('./Routes/auth');
 const courseRouter=require('./Routes/addCourse');
 const questionsRouter = require("./Routes/fetchQue");
+const scoreRouter = require("./Routes/fetchScore");
+
 
 
 
@@ -19,6 +21,7 @@ app.use(queRouter);
 app.use(authRouter);
 app.use(queRouter)
 app.use(courseRouter);
+app.use(scoreRouter);
 
 app.use(questionsRouter);
 
