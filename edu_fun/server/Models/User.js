@@ -7,6 +7,7 @@ const userSchema = mongoose.Schema({
     password:{type:String,required:true},
     CurrentlyLearning: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
     currentStreak: { type: Number, default: 0 },
+    score:{type:Number,default:0},
     maxStreak: { type: Number, default: 0 },
     totalQuizzesTaken: { type: Number, default: 0 },
     quizzesCompleted: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' }],
