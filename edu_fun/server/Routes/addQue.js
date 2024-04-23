@@ -5,36 +5,36 @@ const Question = require('../Models/Questions');
 
 querouter.post('/api/quizzes', async (req, res) => {
   try {
-    const { title, description, level, languageId } = req.body;
+    const { title, description, level, courseId } = req.body;
     const quiz = new Quiz({
       title,
       description,
       level,
-      language: languageId,
+      course: courseId,
       questions: [],
     });
     await quiz.save();
     res.json(quiz);
   } catch (err) {
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: 'Server Error' + err });
   }
 });
 
-querouter.post('/api/quizzes/:quizId/questions', async (req, res) => {
+querouter.post('/api/quizzes/questions', async (req, res) => {
   try {
-    const { text, options, correctOption } = req.body;
-    const quizId = req.params.quizId;
+    const { que, options, ans } = req.body;
+    // const quizId = req.params.quizId;
 
-    const question = new Question({ text, options, correctOption });
+    const question = new Question({ que, options, ans });
     await question.save();
 
-    const quiz = await Quiz.findById(quizId);
-    quiz.questions.push(question._id);
-    await quiz.save();
+    // const quiz = await Quiz.findById(quizId);
+    // quiz.questions.push(question._id);
+    // await quiz.save();
 
     res.json(question);
   } catch (err) {
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: 'Server Error' +err});
   }
 });
 
