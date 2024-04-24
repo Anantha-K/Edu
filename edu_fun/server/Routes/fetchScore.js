@@ -16,6 +16,21 @@ scoreRouter.post('/api/user/updateScore', async (req, res) => {
     }
 });
 
+scoreRouter.post('/api/user/resetScore', async (req, res) => {
+    try {
+        const { userId } = req.body;
+        const user = await User.findOneAndUpdate(
+            { _id: userId },
+            { score: 0 },
+            { new: true }
+        );
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ message: 'Server Error', error: err });
+    }
+});
+
+
 scoreRouter.get('/api/user/fetchScore', async (req, res) => {
     try {
         const user = await User.findOne();
