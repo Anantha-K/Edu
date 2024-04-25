@@ -22,10 +22,10 @@ querouter.post('/api/quizzes', async (req, res) => {
 
 querouter.post('/api/quizzes/questions', async (req, res) => {
   try {
-    const { que, options, ans } = req.body;
+    const { que, option1,option2,option3,option4, ans } = req.body;
     // const quizId = req.params.quizId;
 
-    const question = new Question({ que, options, ans });
+    const question = new Question({ que, option1,option2,option3,option4, ans });
     await question.save();
 
     // const quiz = await Quiz.findById(quizId);
